@@ -9,9 +9,9 @@ var max_horiz_vel = 500
 func get_movement_inputs():
 	
 	# Accelerate to max velocity if direction is held
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - horiz_accel, -max_horiz_vel)
-	elif Input.is_action_pressed("right"):
+	elif Input.is_action_pressed("ui_right"):
 		velocity.x = min(velocity.x + horiz_accel, max_horiz_vel)
 	
 	# Decelerate when not moving
