@@ -5,13 +5,19 @@ var velocity = Vector2()
 var horiz_accel = 100
 var max_horiz_vel = 500
 
+var screen_size
+export var start_position = Vector2.ZERO
+
+func _ready():
+	screen_size = get_viewport_rect().size
+	position = start_position
 
 func get_movement_inputs():
 	
 	# Accelerate to max velocity if direction is held
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("left"):
 		velocity.x = max(velocity.x - horiz_accel, -max_horiz_vel)
-	elif Input.is_action_pressed("ui_right"):
+	elif Input.is_action_pressed("right"):
 		velocity.x = min(velocity.x + horiz_accel, max_horiz_vel)
 	
 	# Decelerate when not moving
@@ -28,3 +34,6 @@ func get_movement_inputs():
 func _physics_process(delta):
 	get_movement_inputs()
 	velocity = move_and_slide(velocity)
+	
+	position.x = clamp(position.x, 0, screen_size.x)
+	position.y = clamp(position.y, 0, screen_size.y)
