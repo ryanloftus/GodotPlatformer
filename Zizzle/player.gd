@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends RigidBody2D
 
 
 var velocity = Vector2()
@@ -26,14 +26,11 @@ func get_movement_inputs():
 			velocity.x = max(velocity.x + horiz_accel, 0.0)
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
-	
-	# To add other inputs, you have to go to Project -> Project Settings ->
-	# Input Map tab, and add an action with a descriptor such as "left" or "up"
-
 
 func _physics_process(delta):
 	get_movement_inputs()
-	velocity = move_and_slide(velocity)
+	
+	position = position + velocity * delta
 	
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
