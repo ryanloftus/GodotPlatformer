@@ -7,7 +7,9 @@
 radius = 22.4804
 
 [node name="Player" type="RigidBody2D"]
+gravity_scale = 4.0
 script = ExtResource( 2 )
+jump_power = 600
 start_position = Vector2( 512, 300 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -18,5 +20,3 @@ texture = ExtResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1, -1.5 )
 shape = SubResource( 1 )
-
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
