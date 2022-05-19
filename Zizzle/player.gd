@@ -2,8 +2,8 @@ extends KinematicBody2D
 
 export var horiz_accel = 100
 export var max_horiz_vel = 500
-export var jump_power = 300
-export var gravity = 20
+export var jump_power = 1000
+export var gravity = 50
 
 var velocity = Vector2()
 var screen_size
@@ -28,12 +28,12 @@ func get_inputs(delta):
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
-	print(is_on_floor())
 	if jump and is_on_floor():
-		print("A")
 		velocity.y = -jump_power
-	velocity.y += gravity
+		
+	if not is_on_floor():
+		velocity.y += gravity
 	
 func _physics_process(delta):
 	get_inputs(delta)
-	move_and_slide(velocity)
+	move_and_slide(velocity, Vector2.UP)
