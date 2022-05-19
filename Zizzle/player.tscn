@@ -3,20 +3,15 @@
 [ext_resource path="res://assets/ballBlue_10.png" type="Texture" id=1]
 [ext_resource path="res://player.gd" type="Script" id=2]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 22.4804
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 50, 50 )
 
-[node name="Player" type="RigidBody2D"]
-gravity_scale = 4.0
+[node name="KinematicBody2D" type="KinematicBody2D"]
 script = ExtResource( 2 )
-jump_power = 600
-start_position = Vector2( 512, 300 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -1, -2 )
-scale = Vector2( 0.344595, 0.317568 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -1, -1.5 )
+position = Vector2( 0, -2 )
 shape = SubResource( 1 )

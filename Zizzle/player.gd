@@ -1,20 +1,17 @@
-extends RigidBody2D
+extends KinematicBody2D
 
 export var horiz_accel = 100
 export var max_horiz_vel = 500
 export var jump_power = 300
+export var gravity = 20
 
+var velocity = Vector2()
 var screen_size
-export var start_position = Vector2.ZERO
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	position = start_position
 
-func _integrate_forces(state):
-	var velocity = state.get_linear_velocity()
-	var step = state.get_step()
-	
+func get_inputs(delta):
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
 	var jump = Input.is_action_pressed("jump")
@@ -31,12 +28,12 @@ func _integrate_forces(state):
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
-	if jump:
+	print(is_on_floor())
+	if jump and is_on_floor():
+		print("A")
 		velocity.y = -jump_power
-	
-	velocity += state.get_total_gravity() * step
-	state.set_linear_velocity(velocity)
+	velocity.y += gravity
 	
 func _physics_process(delta):
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
+	get_inputs(delta)
+	move_and_slide(velocity)
