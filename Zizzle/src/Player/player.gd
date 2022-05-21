@@ -28,11 +28,12 @@ func get_inputs(delta):
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
-	if jump and is_on_floor():
-		velocity.y = -jump_power
-		
 	if not is_on_floor():
 		velocity.y += gravity
+	elif jump:
+		velocity.y = -jump_power
+	else:
+		velocity.y = 0.0
 	
 func _physics_process(delta):
 	get_inputs(delta)
