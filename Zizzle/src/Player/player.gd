@@ -17,7 +17,8 @@ func _ready():
 func get_inputs(delta):
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
-	var jump = Input.is_action_pressed("jump")
+	var jump_pressed = Input.is_action_just_pressed("jump")
+	var jump_held = Input.is_action_pressed("jump")
 	
 	# Accelerate to max velocity if direction is held
 	if left:
@@ -36,7 +37,7 @@ func get_inputs(delta):
 		velocity.y = 0.0
 		coyote_time_timer = 0.0
 		
-	if jump:
+	if jump_pressed:
 		# If you're on the floor or coyote time hasn't run out:
 		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
 			coyote_time_timer = COYOTE_TIME + 1.0  # Disable coyote time
