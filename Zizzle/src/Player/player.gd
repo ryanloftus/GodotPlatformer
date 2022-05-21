@@ -9,6 +9,8 @@ export var gravity = 50
 var velocity = Vector2()
 var screen_size
 
+signal collided_with_floor
+
 func _ready():
 	screen_size = get_viewport_rect().size
 
@@ -47,3 +49,9 @@ func update_velocity(delta: float, velocity: Vector2):
 func _physics_process(delta):
 	velocity = update_velocity(delta, velocity)
 	move_and_slide(velocity, Vector2.UP)
+	
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision.collider.name == "Ground":
+			emit_signal("collided_with_floor")
+	
