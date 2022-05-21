@@ -3,6 +3,7 @@ extends KinematicBody2D
 export var horiz_accel = 100
 export var max_horiz_vel = 500
 export var jump_power = 1000
+export var min_jump_power = 250
 export var gravity = 50
 
 var velocity = Vector2()
@@ -11,16 +12,17 @@ var screen_size
 func _ready():
 	screen_size = get_viewport_rect().size
 
-func get_inputs(delta):
+func update_velocity(delta: float, velocity: Vector2):
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
 	var jump = Input.is_action_pressed("jump")
+	var jump_stopped = Input.is_action_just_released("jump")
 	
 	# Accelerate to max velocity if direction is held
 	if left:
-		velocity.x = max(velocity.x - horiz_accel, -max_horiz_vel)
+		velocity.x -= horiz_accel
 	elif right:
-		velocity.x = min(velocity.x + horiz_accel, max_horiz_vel)
+		velocity.x += horiz_accel
 	else:
 		# Decelerate when not moving
 		if velocity.x < 0.0:
@@ -28,12 +30,20 @@ func get_inputs(delta):
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
+	velocity.x = clamp(velocity.x, -max_horiz_vel, max_horiz_vel)
+	
 	if jump and is_on_floor():
 		velocity.y = -jump_power
+	elif jump_stopped && velocity.y < 0.0:
+		# allows for variable jump heights
+		velocity.y = max(velocity.y, -min_jump_power)
+	
 		
 	if not is_on_floor():
 		velocity.y += gravity
 	
+	return velocity
+	
 func _physics_process(delta):
-	get_inputs(delta)
+	velocity = update_velocity(delta, velocity)
 	move_and_slide(velocity, Vector2.UP)

@@ -25,7 +25,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="Ground" parent="." instance=ExtResource( 3 )]
-position = Vector2( 400, 568 )
+position = Vector2( 440, 568 )
 collision_layer = 2
 collision_mask = 6
 

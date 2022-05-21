@@ -12,6 +12,9 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
 }
+jump_power = 700
+min_jump_power = 100
+gravity = 25
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.4, 0.4 )
@@ -23,9 +26,6 @@ shape = SubResource( 1 )
 [node name="FollowCamera" type="Camera2D" parent="."]
 offset = Vector2( 0, -50 )
 current = true
-drag_margin_h_enabled = true
 drag_margin_v_enabled = true
-drag_margin_left = 0.4
-drag_margin_top = 1.0
-drag_margin_right = 0.4
-drag_margin_bottom = 0.4
+drag_margin_top = 0.1
+drag_margin_bottom = 0.5
