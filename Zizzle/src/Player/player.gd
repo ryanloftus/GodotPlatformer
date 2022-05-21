@@ -5,6 +5,9 @@ export var max_horiz_vel = 500
 export var jump_power = 1000
 export var gravity = 50
 
+var COYOTE_TIME = 0.07  # Slightly more than four frames
+var coyote_time_timer = 0.0
+
 var velocity = Vector2()
 var screen_size
 
@@ -28,14 +31,21 @@ func get_inputs(delta):
 		elif velocity.x > 0.0:
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
+	if is_on_floor():
+		velocity.y = 0.0
+		coyote_time_timer = 0.0
+	if jump:
+		# If you're on the floor or coyote time hasn't run out:
+		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
+			coyote_time_timer = COYOTE_TIME + 1.0  # Disable coyote time
+			velocity.y = -jump_power  # Jump
 	if not is_on_floor():
 		if is_on_ceiling():
 			velocity.y = 0.0
 		velocity.y += gravity
-	elif jump:
-		velocity.y = -jump_power
-	else:
-		velocity.y = 0.0
+		
+		if coyote_time_timer < COYOTE_TIME:
+			coyote_time_timer += delta
 	
 func _physics_process(delta):
 	get_inputs(delta)
