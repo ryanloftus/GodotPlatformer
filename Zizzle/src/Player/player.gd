@@ -29,6 +29,8 @@ func get_inputs(delta):
 			velocity.x = min(velocity.x - horiz_accel, 0.0)
 	
 	if not is_on_floor():
+		if is_on_ceiling():
+			velocity.y = 0.0
 		velocity.y += gravity
 	elif jump:
 		velocity.y = -jump_power
