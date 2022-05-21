@@ -6,7 +6,7 @@ export var jump_power = 1000
 export var gravity = 46
 
 var COYOTE_TIME = 0.07  # Slightly more than four frames
-var coyote_time_timer = 0.0
+var coyote_time_timer = COYOTE_TIME + 1.0
 
 var JUMP_BUFFER = 0.07  # Slightly more than four frames
 var jump_buffer_timer = JUMP_BUFFER + 1.0
