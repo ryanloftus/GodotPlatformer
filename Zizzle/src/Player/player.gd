@@ -42,10 +42,11 @@ func get_inputs(delta):
 	if not is_on_floor():
 		if is_on_ceiling():
 			velocity.y = 0.0
-		velocity.y += gravity
 		
 		if coyote_time_timer < COYOTE_TIME:
 			coyote_time_timer += delta
+			
+	velocity.y += gravity
 	
 func _physics_process(delta):
 	get_inputs(delta)
