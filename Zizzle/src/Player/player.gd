@@ -4,6 +4,7 @@ export var horiz_accel = 100
 export var max_horiz_vel = 500
 export var jump_power = 1000
 export var gravity = 46
+export var terminal_velocity = 1000
 
 var COYOTE_TIME = 0.07  # Slightly more than four frames
 var coyote_time_timer = COYOTE_TIME + 1.0
@@ -63,8 +64,9 @@ func get_inputs(delta):
 		# Increment coyote time
 		if coyote_time_timer < COYOTE_TIME:
 			coyote_time_timer += delta
-			
-	velocity.y += gravity
+	
+	if velocity.y < terminal_velocity:
+		velocity.y = min(velocity.y + gravity, terminal_velocity)
 	
 func _physics_process(delta):
 	get_inputs(delta)
