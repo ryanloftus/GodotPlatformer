@@ -8,11 +8,19 @@ export var gravity = 46
 var COYOTE_TIME = 0.07  # Slightly more than four frames
 var coyote_time_timer = 0.0
 
+var JUMP_BUFFER = 0.07  # Slightly more than four frames
+var jump_buffer_timer = JUMP_BUFFER + 1.0
+
 var velocity = Vector2()
 var screen_size
 
 func _ready():
 	screen_size = get_viewport_rect().size
+
+func jump():
+	coyote_time_timer = COYOTE_TIME + 1.0  # Disable coyote time
+	jump_buffer_timer = JUMP_BUFFER + 1.0  # Disable jump buffer
+	velocity.y = -jump_power  # Jump	
 
 func get_inputs(delta):
 	var left = Input.is_action_pressed("left")
@@ -36,12 +44,16 @@ func get_inputs(delta):
 	if is_on_floor():
 		velocity.y = 0.0
 		coyote_time_timer = 0.0
-		
+	
+	# If you press jump, start the jump buffer timer
 	if jump_pressed:
-		# If you're on the floor or coyote time hasn't run out:
+		jump_buffer_timer = 0.0
+		
+	# If you touch the ground before the jump buffer runs out, jump
+	if jump_buffer_timer < JUMP_BUFFER:
+		jump_buffer_timer += delta
 		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
-			coyote_time_timer = COYOTE_TIME + 1.0  # Disable coyote time
-			velocity.y = -jump_power  # Jump
+			jump()
 		
 	if not is_on_floor():
 		# Bonk against ceiling
