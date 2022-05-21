@@ -15,14 +15,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tile" parent="." instance=ExtResource( 1 )]
-position = Vector2( 472, 528 )
-collision_mask = 5
-
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 512, 136 )
 collision_layer = 4
 collision_mask = 3
+
+[node name="Tile" parent="." instance=ExtResource( 1 )]
+position = Vector2( 472, 528 )
+collision_mask = 5
 
 [node name="Ground" parent="." instance=ExtResource( 3 )]
 position = Vector2( 440, 568 )

@@ -9,7 +9,7 @@ func _ready():
 	var target_width = screen_size.x
 	var texture_size = $Sprite.texture.get_size()
 	
-	$Sprite.scale.x = (1 / texture_size.x) * target_width
+	# $Sprite.scale.x = (1 / texture_size.x) * target_width
 	
 	print(texture_size, screen_size, $Sprite.scale)
 
