@@ -3,7 +3,7 @@ extends KinematicBody2D
 export var horiz_accel = 100
 export var max_horiz_vel = 500
 export var jump_power = 1000
-export var gravity = 50
+export var gravity = 46
 
 var COYOTE_TIME = 0.07  # Slightly more than four frames
 var coyote_time_timer = 0.0
