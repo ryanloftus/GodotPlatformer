@@ -1,14 +1,16 @@
-[entry]
-
-OSX.64="res://libzizzle_lib.dylib"
-
-[dependencies]
-
-OSX.64=[ "res://libzizzle_lib.dylib" ]
-
 [general]
 
 singleton=false
 load_once=true
 symbol_prefix="godot_"
 reloadable=true
+
+[entry]
+
+OSX.64="res://libzizzle_lib.dylib"
+Windows.64=""
+
+[dependencies]
+
+OSX.64=[ "res://libzizzle_lib.dylib" ]
+Windows.64=[ "res://libzizzle_lib.dll" ]
