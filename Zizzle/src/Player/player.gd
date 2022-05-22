@@ -51,8 +51,6 @@ func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 		velocity.y = 0.0
 		coyote_time_timer = 0.0
 	
-	#if jump_pressed and is_on_floor():
-	#	velocity.y = -jump_power
 	if jump_stopped && velocity.y < 0.0:
 		# allows for variable jump heights
 		velocity.y = max(velocity.y, -min_jump_power)
