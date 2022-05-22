@@ -1,10 +1,12 @@
 [entry]
 
 OSX.64="res://libzizzle_lib.dylib"
+Windows.64="res://libzizzle_lib.dll"
 
 [dependencies]
 
 OSX.64=[ "res://libzizzle_lib.dylib" ]
+Windows.64=[ "res://libzizzle_lib.dll" ]
 
 [general]
 
