@@ -3,6 +3,7 @@ extends KinematicBody2D
 export var horiz_accel = 100
 export var max_horiz_vel = 500
 export var jump_power = 1000
+export var min_jump_power = 100
 export var gravity = 46
 export var terminal_velocity = 1000
 
@@ -15,36 +16,44 @@ var jump_buffer_timer = JUMP_BUFFER + 1.0
 var velocity = Vector2()
 var screen_size
 
+signal collided_with_floor
+
 func _ready():
 	screen_size = get_viewport_rect().size
-
-func jump():
+	
+func apply_jump(velocity: Vector2) -> Vector2:
 	coyote_time_timer = COYOTE_TIME + 1.0  # Disable coyote time
 	jump_buffer_timer = JUMP_BUFFER + 1.0  # Disable jump buffer
 	velocity.y = -jump_power  # Jump	
+	
+	return velocity
 
-func get_inputs(delta):
+func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
 	var jump_pressed = Input.is_action_just_pressed("jump")
 	var jump_held = Input.is_action_pressed("jump")
+	var jump_stopped = Input.is_action_just_released("jump")
 	
 	# Accelerate to max velocity if direction is held
 	if left:
-		velocity.x = max(velocity.x - horiz_accel, -max_horiz_vel)
+		velocity.x -= horiz_accel
 	elif right:
-		velocity.x = min(velocity.x + horiz_accel, max_horiz_vel)
-		
-	# Decelerate when not moving
+		velocity.x += horiz_accel
 	else:
+		# Decelerate when not moving
 		if velocity.x < 0.0:
-			velocity.x = max(velocity.x + horiz_accel, 0.0)
+			velocity.x += min(horiz_accel, abs(velocity.x))
 		elif velocity.x > 0.0:
-			velocity.x = min(velocity.x - horiz_accel, 0.0)
+			velocity.x += max(-horiz_accel, -abs(velocity.x))
 		
 	if is_on_floor():
 		velocity.y = 0.0
 		coyote_time_timer = 0.0
+	
+	if jump_stopped && velocity.y < 0.0:
+		# allows for variable jump heights
+		velocity.y = max(velocity.y, -min_jump_power)
 	
 	# If you press jump, start the jump buffer timer
 	if jump_pressed:
@@ -54,7 +63,8 @@ func get_inputs(delta):
 	if jump_buffer_timer < JUMP_BUFFER:
 		jump_buffer_timer += delta
 		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
-			jump()
+			velocity = apply_jump(velocity)
+			print(velocity)
 		
 	if not is_on_floor():
 		# Bonk against ceiling
@@ -65,13 +75,21 @@ func get_inputs(delta):
 		if coyote_time_timer < COYOTE_TIME:
 			coyote_time_timer += delta
 	
-	if velocity.y < terminal_velocity:
-		velocity.y = min(velocity.y + gravity, terminal_velocity)
+	velocity.y += gravity
+	
+	velocity.x = clamp(velocity.x, -max_horiz_vel, max_horiz_vel)
+	velocity.y = clamp(velocity.y, -jump_power, terminal_velocity)
+	return velocity
+
+func check_for_ground_collision():
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision.collider.name == "Ground":
+			emit_signal("collided_with_floor")
 	
 func _physics_process(delta):
-	for i in get_slide_count():
-		var obj_collided_with = get_slide_collision(i).get_collider().get_instance_id()
-		if obj_collided_with == get_parent().get_node("Ground").get_instance_id():
-			get_tree().change_scene("res://scenes/GameOver.tscn")
-	get_inputs(delta)
+	velocity = update_velocity(delta, velocity)
 	move_and_slide(velocity, Vector2.UP)
+	check_for_ground_collision()
+	
+	
