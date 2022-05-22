@@ -69,5 +69,9 @@ func get_inputs(delta):
 		velocity.y = min(velocity.y + gravity, terminal_velocity)
 	
 func _physics_process(delta):
+	for i in get_slide_count():
+		var obj_collided_with = get_slide_collision(i).get_collider().get_instance_id()
+		if obj_collided_with == get_parent().get_node("Ground").get_instance_id():
+			get_tree().change_scene("res://scenes/GameOver.tscn")
 	get_inputs(delta)
 	move_and_slide(velocity, Vector2.UP)

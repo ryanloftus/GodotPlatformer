@@ -11,9 +11,6 @@ margin_top = -720.0
 margin_right = 1024.0
 margin_bottom = 600.0
 color = Color( 0.917647, 0.564706, 0.564706, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Tile" parent="." instance=ExtResource( 1 )]
 position = Vector2( 472, 528 )
