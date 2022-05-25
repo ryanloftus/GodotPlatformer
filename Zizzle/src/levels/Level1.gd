@@ -17,7 +17,7 @@ func _on_Player_collided_with_floor() -> void:
 	get_tree().change_scene("res://scenes/GameOver.tscn")
 
 
-func new_camera_pos(camera_pos, player_pos):
+func new_camera_pos(camera_pos: Vector2, player_pos: Vector2) -> Vector2:
 	var down = Input.is_action_pressed("down")
 	
 	var target_y
