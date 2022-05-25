@@ -6,6 +6,7 @@
 radius = 18.8471
 
 [node name="ThrowableObject" type="RigidBody2D"]
+gravity_scale = 5.0
 __meta__ = {
 "_edit_group_": true
 }
