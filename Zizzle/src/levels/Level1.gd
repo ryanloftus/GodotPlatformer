@@ -17,17 +17,17 @@ func _on_Player_collided_with_floor() -> void:
 	get_tree().change_scene("res://scenes/GameOver.tscn")
 
 
-func update_camera():
+func new_camera_pos(camera_pos, player_pos):
 	var down = Input.is_action_pressed("down")
 	
 	var target_y
 	if down:
-		target_y = player.position.y + CAMERA_DOWN_DISTANCE
+		target_y = player_pos.y + CAMERA_DOWN_DISTANCE
 	else:
-		target_y = player.position.y - CAMERA_DEFAULT_PLAYER_DISTANCE
+		target_y = player_pos.y - CAMERA_DEFAULT_PLAYER_DISTANCE
 	
-	camera.position.y = lerp(camera.position.y, target_y, CAMERA_SPEED)
+	return Vector2(0.0, lerp(camera_pos.y, target_y, CAMERA_SPEED))
 
 
 func _process(dt):
-	update_camera()
+	camera.position = new_camera_pos(camera.position, player.position)
