@@ -71,7 +71,6 @@ func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 		jump_buffer_timer += delta
 		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
 			velocity = apply_jump(velocity)
-			print(velocity)
 		
 	if not is_on_floor():
 		# Bonk against ceiling
