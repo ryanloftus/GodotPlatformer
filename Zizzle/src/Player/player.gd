@@ -13,6 +13,9 @@ var coyote_time_timer = COYOTE_TIME + 1.0
 var JUMP_BUFFER = 0.07  # Slightly more than four frames
 var jump_buffer_timer = JUMP_BUFFER + 1.0
 
+var JUMP_STOP_GRAVITY_MULTIPLIER = 2.4
+var jump_stop_active = false
+
 var velocity = Vector2()
 var screen_size
 
@@ -53,7 +56,11 @@ func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 	
 	if jump_stopped && velocity.y < 0.0:
 		# allows for variable jump heights
-		velocity.y = max(velocity.y, -min_jump_power)
+		jump_stop_active = true
+	
+	# Deactivate jump stopping after the arc is complete
+	if jump_stop_active and velocity.y > 0.0:
+		jump_stop_active = false
 	
 	# If you press jump, start the jump buffer timer
 	if jump_pressed:
@@ -64,7 +71,6 @@ func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 		jump_buffer_timer += delta
 		if is_on_floor() or coyote_time_timer < COYOTE_TIME:
 			velocity = apply_jump(velocity)
-			print(velocity)
 		
 	if not is_on_floor():
 		# Bonk against ceiling
@@ -75,7 +81,10 @@ func update_velocity(delta: float, velocity: Vector2) -> Vector2:
 		if coyote_time_timer < COYOTE_TIME:
 			coyote_time_timer += delta
 	
-	velocity.y += gravity
+	if jump_stop_active:
+		velocity.y += gravity * JUMP_STOP_GRAVITY_MULTIPLIER
+	else:
+		velocity.y += gravity
 	
 	velocity.x = clamp(velocity.x, -max_horiz_vel, max_horiz_vel)
 	velocity.y = clamp(velocity.y, -jump_power, terminal_velocity)
