@@ -49,4 +49,8 @@ max_horiz_vel = 400
 
 [node name="Ground" parent="." instance=ExtResource( 1 )]
 position = Vector2( -64, 640 )
+
+[node name="Camera" type="Camera2D" parent="."]
+current = true
+
 [connection signal="collided_with_floor" from="Player" to="." method="_on_Player_collided_with_floor"]
