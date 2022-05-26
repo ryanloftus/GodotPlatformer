@@ -2,11 +2,13 @@ extends Node2D
 
 onready var camera = $Camera
 onready var player = $Player
+onready var roof = $Roof
 
 onready var screen_size = get_viewport_rect().size
 
 
 var CAMERA_SPEED = 0.1
+onready var ROOF_CAMERA_OFFSET = 50 - screen_size.y / 2
 # Camera is centered, so this places the player at 1/2 - 1/6 = 1/3 on the screen
 onready var CAMERA_DEFAULT_PLAYER_DISTANCE = screen_size.y / 6
 # This places the player at 1/2 - 1/4 = 1/4 on the screen
@@ -26,7 +28,9 @@ func new_camera_pos(dt: float, camera_pos: Vector2, player_pos: Vector2) -> Vect
 		target_y = player_pos.y + CAMERA_DOWN_DISTANCE
 	else:
 		target_y = player_pos.y - CAMERA_DEFAULT_PLAYER_DISTANCE
-
+	
+	target_y = max(target_y, roof.position.y - ROOF_CAMERA_OFFSET)
+	
 	return Vector2(0.0, lerp(camera_pos.y, target_y, CAMERA_SPEED * dt * 60))
 
 
