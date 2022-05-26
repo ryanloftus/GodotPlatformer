@@ -8,7 +8,8 @@ onready var screen_size = get_viewport_rect().size
 
 
 var CAMERA_SPEED = 0.1
-onready var ROOF_CAMERA_OFFSET = camera_adjust_y(50)
+export var ROOF_DISPLAY_HEIGHT = 50  # How much of the roof to show
+onready var ROOF_CAMERA_OFFSET = camera_adjust_y(ROOF_DISPLAY_HEIGHT)
 onready var CAMERA_DEFAULT_PLAYER_DISTANCE = camera_adjust_y((2.0/3.0) * screen_size.y)
 onready var CAMERA_DOWN_DISTANCE = camera_adjust_y((3.0/4.0) * screen_size.y)
 
